@@ -63,5 +63,10 @@ Player.prototype.update = function () {
 };
 
 Player.prototype.canJump = function () {
-    return true;
+  return Math.abs(this.body.velocity.y) < 1;
+};
+
+Player.prototype.onHitBox = function (bodyPlayer, bodyBox) {
+  console.log("onHitBox");
+  // bodyBox.velocity.x = 300;
 };
