@@ -11,6 +11,8 @@ window.onload = function () {
     this.cursors = null;
     this.jumpButton = null;
     this.yAxis = p2.vec2.fromValues(0, 1);
+
+    this.segmentList = null;
   };
 
   PhaserGame.prototype = {
@@ -19,14 +21,17 @@ window.onload = function () {
 
     preload: function () {
       // this.load.baseURL = '';
-      this.load.image('atari', 'assets/block.png');
-      this.load.image('background', 'assets/background2.png');
-      this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+      this.load.image('atari', 'assets/demo/block.png');
+      this.load.image('background', 'assets/demo/sky.png');
+      this.load.spritesheet('dude', 'assets/demo/dude.png', 32, 48);
+      this.load.json('data', 'data/datalists.json');
     },
 
     create: function () {
-      bg = this.add.tileSprite(0, 0, 800, 600, 'background');
+      this.parseDataLists('data');
+      this.buildLevel();
 
+      this.game.camera.setSize(1366, 768);
       //  Enable p2 physics
       this.physics.startSystem(Phaser.Physics.P2JS);
 
@@ -42,6 +47,7 @@ window.onload = function () {
 
       //  Enable if for physics. This creates a default rectangular body.
       this.physics.p2.enable(this.player);
+
 
       this.player.body.fixedRotation = true;
       this.player.body.damping = 0.5;
@@ -119,10 +125,11 @@ window.onload = function () {
       }
 
       if (this.jumpButton.isDown && game.time.now > this.jumpTimer && this.checkIfCanJump()) {
-        this.player.body.moveUp(300);
+        this.player.body.moveUp(900);
         this.jumpTimer = game.time.now + 750;
       }
 
+      this.updateCameraBounds(this.player);
 
     },
 
@@ -145,6 +152,48 @@ window.onload = function () {
         }
       }
       return result;
+    },
+
+    buildLevel: function () {
+      var sList = this.segmentList;
+      var segment = null;
+
+      for (var i = 0; i < 3; i++) {
+        segment = Phaser.ArrayUtils.removeRandomItem(this.segmentList);
+        if(segment == undefined)
+          break;
+        segment.addToGame(game, i);
+      }
+    },
+
+    parseDataLists: function(key) {
+      var data = this.cache.getJSON(key);
+
+      var sList = new Array();
+      data.Segments.forEach(function () {
+        sList.push(new Segment('background'));
+      });
+      console.log(sList);
+      this.segmentList = sList;
+    },
+
+    updateCameraBounds: function(player) {
+      if(player.x > (game.camera.x + game.camera.width)) {
+        /*game.camera.x += game.camera.width;*/
+        game.add.tween(game.camera).to({ x: game.camera.x + game.camera.width }, 500, Phaser.Easing.Linear.None, true);
+      }
+
+      if(player.x < (game.camera.x)) {
+        if(game.camera.x > 0) {
+          game.add.tween(game.camera).to({ x: game.camera.x - game.camera.width }, 500, Phaser.Easing.Linear.None, true);
+          /*game.camera.x -= game.camera.width;*/
+        }
+      }
+
+      var halfCameraHeight = game.camera.height / 2;
+      if(player.y > halfCameraHeight) {
+        game.camera.y = player.y - halfCameraHeight;
+      }
     }
   };
 
@@ -153,13 +202,6 @@ window.onload = function () {
     Phaser.Sprite.call(this, game, x, y, key);
 
     this.physics.p2.enable(this);
-
-    // this.anchor.x = 0.5;
-
-    // this.body.customSeparateX = true;
-    // this.body.customSeparateY = true;
-    // this.body.allowGravity = false;
-    // this.body.immovable = true;
   };
 
   CustomSprite.prototype = Object.create(Phaser.Sprite.prototype);
