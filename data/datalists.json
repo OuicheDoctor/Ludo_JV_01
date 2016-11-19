@@ -1,0 +1,30 @@
+{
+  "Segments" : [
+    {
+      "ID" : 1,
+      "Nom" : "Test",
+      "Width" : 100,
+      "Height" : 200
+    },
+    {
+      "ID" : 2,
+      "Nom" : "Test2",
+      "Width" : 200,
+      "Height" : 300
+    },
+    {
+      "ID" : 3,
+      "Nom" : "Test3",
+      "Width" : 200,
+      "Height" : 200
+    }
+  ],
+  "Obstacles" : [
+  ],
+  "Ennemis" : [
+  ],
+  "Boss" : [
+  ],
+  "Transformations" : [
+  ]
+}
