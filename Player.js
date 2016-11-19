@@ -25,14 +25,15 @@ Player.prototype.constructor = Player;
 
 Player.prototype.update = function () {
   var cursors = this.phaser.cursors;
-  if (cursors.left.isDown) {
+  var pad1 = this.phaser.input.gamepad.pad1;
+  if (pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_LEFT) || pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) < -0.1 || cursors.left.isDown) {
     this.body.moveLeft(200);
     if (this.facing != 'left') {
       this.animations.play('left');
       this.facing = 'left';
     }
   }
-  else if (cursors.right.isDown) {
+  else if (pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_RIGHT) || pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) > 0.1 || cursors.right.isDown) {
     this.body.moveRight(200);
 
     if (this.facing != 'right') {
@@ -57,8 +58,35 @@ Player.prototype.update = function () {
     }
   }
 
-  if (this.phaser.jumpButton.isDown && this.canJump()) {
+  if ((this.phaser.jumpButton.isDown || pad1.justPressed(Phaser.Gamepad.XBOX360_A)) && this.canJump()) {
     this.body.moveUp(300);
+  }
+
+  // Gamepad Controls
+  if (pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_UP) || pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y) < -0.1)
+  {
+    // sprite.y--;
+  }
+  else if (pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_DOWN) || pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y) > 0.1)
+  {
+    // sprite.y++;
+  }
+
+  // Axis mouvement
+  if (pad1.connected)
+  {
+    var rightStickX = pad1.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_X);
+    var rightStickY = pad1.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_Y);
+
+    if (rightStickX)
+    {
+      this.x += rightStickX * 10;
+    }
+
+    if (rightStickY)
+    {
+      // this.y += rightStickY * 10;
+    }
   }
 };
 

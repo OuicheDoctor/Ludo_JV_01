@@ -14,6 +14,31 @@ window.onload = function () {
 
   PhaserGame.prototype = {
     init: function () {
+      // Controls
+      this.cursors = this.input.keyboard.createCursorKeys();
+      this.jumpButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+      // Gamepad
+      this.input.gamepad.start();
+
+      // To listen to buttons from a specific pad listen directly on that pad game.input.gamepad.padX, where X = pad 1-4
+      pad1 = this.input.gamepad.pad1;
+      this.input.gamepad.addCallbacks(this, {
+        onConnect: function (e) {
+          console.log("onConnectCallback", e);
+        },
+        onDisconnect: function (e) {
+          console.log("onDisconnectCallback", e);
+        },
+        onDown: function (e) {
+        },
+        onUp: function (e) {
+        },
+        onAxis: function (e) {
+        },
+        onFloat: function (e) {
+        }
+      });
     },
 
     preload: function () {
@@ -93,13 +118,17 @@ window.onload = function () {
       // contactMaterial.surfaceVelocity = 0.0;        // Will add surface velocity to this material. If bodyA rests on top if bodyB, and the surface velocity is positive, bodyA will slide to the right.
 
       text = this.add.text(20, 20, 'move with arrow, space to jump', {fill: '#ffffff'});
-
-      // Controls
-      this.cursors = this.input.keyboard.createCursorKeys();
-      this.jumpButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     },
 
     update: function () {
+    },
+
+    /**
+     * Debuggage
+     */
+    dump: function() {
+      // console.log(this.pad1._axes[0]);
+      // console.log(this.pad1._rawPad.axes[0]);
     }
 
     // checkIfCanJumpWTF: function () {
