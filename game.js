@@ -12,7 +12,18 @@ window.onload = function () {
 
     this.segmentList = null;
     this.obstacleList = null;
-    this.groups = {};
+    this.groups = {
+        playerCollisionGroup : null,
+        boxCollisionGroup : null
+    };
+  };
+
+  PhaserGame.ElementTypeEnum = {
+    OBSTACLE        : 1,
+    ACCROCHE        : 2,
+    DECORS          : 3,
+    PIEGE           : 4,
+    MOVING_PLATFORM : 5
   };
 
   PhaserGame.prototype = {
@@ -45,7 +56,6 @@ window.onload = function () {
     },
 
     preload: function () {
-      this.load.image('atari', 'assets/demo/block.png');
       this.load.image('background', 'assets/demo/sky.png');
       this.load.spritesheet('player', 'assets/demo/dude.png', 32, 48);
       this.load.json('data', 'data/datalists.json');
@@ -56,8 +66,21 @@ window.onload = function () {
       this.load.json('segment_3_data', 'data/segments/segment_3.json');
 
       // Elements
-      this.load.image('platform_1_fg', 'assets/elements/platform_1_fg.png');
-      this.load.image('platform_1_bg', 'assets/elements/platform_1_bg.png');
+      this.load.image('element_1_fg', 'assets/elements/element_1_fg.png');
+      this.load.image('element_2_bg', 'assets/elements/element_2_bg.png');
+      this.load.image('element_2_fg', 'assets/elements/element_2_fg.png');
+      this.load.image('element_3_fg', 'assets/elements/element_3_fg.png');
+      this.load.image('element_4_fg', 'assets/elements/element_4_fg.png');
+      this.load.image('element_5_fg', 'assets/elements/element_5_fg.png');
+      this.load.image('element_6_bg', 'assets/elements/element_6_bg.png');
+      this.load.image('element_7_fg', 'assets/elements/element_7_fg.png');
+      this.load.image('element_8_fg', 'assets/elements/element_8_fg.png');
+      this.load.image('element_9_fg', 'assets/elements/element_9_fg.png');
+      this.load.image('element_10_fg', 'assets/elements/element_10_fg.png');
+      this.load.image('element_11_fg', 'assets/elements/element_11_fg.png');
+      this.load.image('element_12_bg', 'assets/elements/element_12_bg.png');
+      this.load.image('element_12_fg', 'assets/elements/element_12_fg.png');
+      this.load.image('element_13_bg', 'assets/elements/element_13_bg.png');
     },
 
     create: function () {
@@ -72,17 +95,21 @@ window.onload = function () {
       phy.world.defaultContactMaterial.friction = 0.3;
       phy.world.setGlobalStiffness(1e5);
 
+      //  Turn on impact events for the world, without this we get no collision callbacks
+      phy.setImpactEvents(true);
+      //  4 trues = the 4 faces of the world in left, right, top, bottom order
+      phy.setWorldMaterial(worldMaterial, true, true, true, true);
+
+      // Groups
+      // Create our collision groups. One for the player, one for the pandas
+      this.groups.playerCollisionGroup = phy.createCollisionGroup();
+      this.groups.boxCollisionGroup = phy.createCollisionGroup();
+
       // Load data
       this.parseDataLists('data');
 
       // Build level
       this.buildLevel();
-
-      // Créer une collision avec un autre sprite
-      // this.player.body.createBodyCallback(panda, hitPanda, this);
-
-      //  Turn on impact events for the world, without this we get no collision callbacks
-      phy.setImpactEvents(true);
 
       //  Player
       this.player = new Player(this);
@@ -91,50 +118,17 @@ window.onload = function () {
       var worldMaterial = phy.createMaterial('worldMaterial');
       var boxMaterial = phy.createMaterial('boxMaterial');
 
-      //  4 trues = the 4 faces of the world in left, right, top, bottom order
-      phy.setWorldMaterial(worldMaterial, true, true, true, true);
-
-      // Groups
-      // Create our collision groups. One for the player, one for the pandas
-      var playerCollisionGroup = phy.createCollisionGroup();
-      var boxCollisionGroup = phy.createCollisionGroup();
-
       // Obligatoire pour que les sprites ayant leurs propres "collisions groups" gardent la collision avec la scene
       // A faire après la création des "collisions groups"
       phy.updateBoundsCollisionGroup();
 
-      var boxGroup = this.add.group();
-      boxGroup.enableBody = true;
-      boxGroup.physicsBodyType = Phaser.Physics.P2JS;
-
-      //  A stack of boxGroup - you'll stick to these
-      for (var i = 1; i < 4; i++) {
-        var box = boxGroup.create(300, 645 - (95 * i), 'atari');
-        box.body.mass = 6;
-        box.body.setMaterial(boxMaterial);
-        box.body.setCollisionGroup(boxCollisionGroup);
-        box.body.collides([boxCollisionGroup, playerCollisionGroup]);
-        // box.body.static = true;
-      }
-
-      this.player.body.setCollisionGroup(playerCollisionGroup);
-      this.player.body.collides(boxCollisionGroup, this.player.onHitBox, this.player);
+      this.player.body.setCollisionGroup(this.groups.playerCollisionGroup);
+      this.player.body.collides(this.groups.boxCollisionGroup, this.player.onHitBox, this.player);
 
       //  Here is the contact material. It's a combination of 2 materials, so whenever shapes with
       //  those 2 materials collide it uses the following settings.
       var groundPlayerCM = phy.createContactMaterial(spriteMaterial, worldMaterial, {friction: 0.0});
-      var groundBoxesCM = phy.createContactMaterial(worldMaterial, boxMaterial, {friction: 0.6});
 
-      //  Here are some more options you can set:
-      // contactMaterial.friction = 0.0;     // Friction to use in the contact of these two materials.
-      // contactMaterial.restitution = 0.0;  // Restitution (i.e. how bouncy it is!) to use in the contact of these two materials.
-      // contactMaterial.stiffness = 1e3;    // Stiffness of the resulting ContactEquation that this ContactMaterial generate.
-      // contactMaterial.relaxation = 0;     // Relaxation of the resulting ContactEquation that this ContactMaterial generate.
-      // contactMaterial.frictionStiffness = 1e7;    // Stiffness of the resulting FrictionEquation that this ContactMaterial generate.
-      // contactMaterial.frictionRelaxation = 3;     // Relaxation of the resulting FrictionEquation that this ContactMaterial generate.
-      // contactMaterial.surfaceVelocity = 0.0;        // Will add surface velocity to this material. If bodyA rests on top if bodyB, and the surface velocity is positive, bodyA will slide to the right.
-
-      text = this.add.text(20, 20, 'move with arrow, space to jump', {fill: '#ffffff'});
       game.input.onDown.add(this.toggleFullScreen, this);
     },
 
@@ -179,7 +173,8 @@ window.onload = function () {
     },
 
     parseDataLists: function(key) {
-      var data = this.cache.getJSON(key);
+      var cache = this.cache;
+      var data = cache.getJSON(key);
 
       var sList = new Array();
       var current;
@@ -192,11 +187,38 @@ window.onload = function () {
 
       // Load obstacles types data
       sList = new Array();
-      data.Obstacles.forEach(function (obs)  {
+      var relativeY;
+      data.Elements.forEach(function (obs)  {
         current = new Platform();
-        current.setForeground(obs.RelativeX, obs.RelativeY, "platform_" + obs.ID + "_fg");
-        current.setBackground("platform_" + obs.ID + "_bg");
-        sList[obs.ID] = current;
+        // Handle moving_platform case;
+        relativeX = obs.relativeX;
+        relativeY = obs.relativeY;
+        switch (obs.type) {
+          case PhaserGame.ElementTypeEnum.MOVING_PLATFORM:
+            current.setDeltaMove(relativeX[1], relativeY[1]);
+            relativeX = relativeX[0];
+            relativeY = relativeY[0];
+            break;
+          case PhaserGame.ElementTypeEnum.ACCROCHE:
+            break;
+          case PhaserGame.ElementTypeEnum.PIEGE:
+            current.setDanger(true);
+            break;
+          case PhaserGame.ElementTypeEnum.OBSTACLE :
+          case PhaserGame.ElementTypeEnum.DECORS :
+          default:
+            break;
+        }
+
+        var fg = "element_" + obs.id + "_fg";
+        if(cache.checkImageKey(fg))
+          current.setForeground(relativeX, relativeY, fg);
+
+        var bg = "element_" + obs.id + "_bg";
+        if(cache.checkImageKey(bg))
+          current.setBackground(bg);
+
+        sList[obs.id] = current;
       });
       this.obstacleList = sList;
     },
