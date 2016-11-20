@@ -20,6 +20,11 @@
     }
   ],
   "Obstacles" : [
+    {
+      "ID" : 1,
+      "RelativeX" : 45,
+      "RelativeY" : 45
+    }
   ],
   "Ennemis" : [
   ],
