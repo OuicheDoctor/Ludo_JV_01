@@ -11,7 +11,7 @@ var Segment = function (id, bkg, y = 0) {
       var x = 0;
       var game = instance.game;
       if(index > 0)
-          x = game.world.width
+          x = game.world.width;
       this.x = x;
       var bkgSprite = game.add.sprite(x, this.y, this.bkg);
       this.buildContent(instance);

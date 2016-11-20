@@ -1,13 +1,14 @@
 var game;
 
 window.onload = function () {
-  game = new Phaser.Game(1366, 768, Phaser.AUTO, 'game');
+  game = new Phaser.Game(380*3, 216*3, Phaser.AUTO, 'game');
 
   var PhaserGame = function () {
     this.sprite = null;
     this.player = null;
     this.cursors = null;
     this.jumpButton = null;
+    this.dashButton = null;
     this.yAxis = p2.vec2.fromValues(0, 1);
 
     this.segmentList = null;
@@ -31,6 +32,7 @@ window.onload = function () {
       // Controls
       this.cursors = this.input.keyboard.createCursorKeys();
       this.jumpButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+      this.dashButton = this.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
 
       // Gamepad
       this.input.gamepad.start();
@@ -53,11 +55,27 @@ window.onload = function () {
         onFloat: function (e) {
         }
       });
+
+      //  Enable p2 physics
+      this.physics.startSystem(Phaser.Physics.P2JS);
+
+      this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      this.game.camera.setSize(380*3, 216*3);
+
+      var phy = this.physics.p2;
+
+      phy.gravity.y = 350;
+      phy.world.defaultContactMaterial.friction = 0.3;
+      phy.world.setGlobalStiffness(1e5);
+
+      //  Turn on impact events for the world, without this we get no collision callbacks
+      phy.setImpactEvents(true);
     },
 
     preload: function () {
       this.load.image('background', 'assets/demo/sky.png');
-      this.load.spritesheet('player', 'assets/demo/dude.png', 32, 48);
+      this.load.spritesheet('dude', 'assets/demo/dude.png', 32, 48);
+      this.load.spritesheet('datgirl', 'assets/elements/datgirl.png', 25, 25);
       this.load.json('data', 'data/datalists.json');
 
       // Segments
@@ -84,28 +102,14 @@ window.onload = function () {
     },
 
     create: function () {
-
-      this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.game.camera.setSize(1366, 768);
-      //  Enable p2 physics
-      this.physics.startSystem(Phaser.Physics.P2JS);
       var phy = this.physics.p2;
-
-      phy.gravity.y = 350;
-      phy.world.defaultContactMaterial.friction = 0.3;
-      phy.world.setGlobalStiffness(1e5);
-
-      //  Turn on impact events for the world, without this we get no collision callbacks
-      phy.setImpactEvents(true);
-      //  4 trues = the 4 faces of the world in left, right, top, bottom order
-      phy.setWorldMaterial(worldMaterial, true, true, true, true);
 
       // Groups
       // Create our collision groups. One for the player, one for the pandas
       this.groups.playerCollisionGroup = phy.createCollisionGroup();
       this.groups.boxCollisionGroup = phy.createCollisionGroup();
 
-      // Load data
+      // Load data, populate obstacleList, segmentList
       this.parseDataLists('data');
 
       // Build level
@@ -117,6 +121,9 @@ window.onload = function () {
       var spriteMaterial = phy.createMaterial('spriteMaterial', this.player.body);
       var worldMaterial = phy.createMaterial('worldMaterial');
       var boxMaterial = phy.createMaterial('boxMaterial');
+
+      //  4 trues = the 4 faces of the world in left, right, top, bottom order
+      phy.setWorldMaterial(worldMaterial, true, true, true, true);
 
       // Obligatoire pour que les sprites ayant leurs propres "collisions groups" gardent la collision avec la scene
       // A faire après la création des "collisions groups"
@@ -132,16 +139,10 @@ window.onload = function () {
       game.input.onDown.add(this.toggleFullScreen, this);
     },
 
-    toggleFullScreen: function () {
-      if(!game.scale.isFullScreen) {
-        this.game.scale.startFullScreen(false);
-      }
-      else
-      {
-        this.game.scale.stopFullScreen();
-      }
-    },
-
+    /**
+     * Constuire un niveau constitué de X segments et placer les éléments au sein des segments
+     * Les segments sont récupérés aléatoirement dans la liste de segments précrées
+     */
     buildLevel: function () {
       var sList = this.segmentList;
       var segment = null;
@@ -155,23 +156,10 @@ window.onload = function () {
       }
     },
 
-    updateCameraBounds: function(player) {
-      if(player.x > (game.camera.x + game.camera.width)) {
-        game.add.tween(game.camera).to({ x: game.camera.x + game.camera.width }, 500, Phaser.Easing.Linear.None, true);
-      }
-
-      if(player.x < (game.camera.x)) {
-        if(game.camera.x > 0) {
-            game.add.tween(game.camera).to({ x: game.camera.x - game.camera.width }, 500, Phaser.Easing.Linear.None, true);
-        }
-      }
-
-      var halfCameraHeight = game.camera.height / 2;
-      if(player.y > halfCameraHeight) {
-        game.camera.y = player.y - halfCameraHeight;
-      }
-    },
-
+    /**
+     * Populate game elements
+     * @param key
+     */
     parseDataLists: function(key) {
       var cache = this.cache;
       var data = cache.getJSON(key);
@@ -222,6 +210,38 @@ window.onload = function () {
       });
       this.obstacleList = sList;
     },
+
+    toggleFullScreen: function () {
+      if(!game.scale.isFullScreen) {
+        this.game.scale.startFullScreen(false);
+      }
+      else
+      {
+        this.game.scale.stopFullScreen();
+      }
+    },
+
+    /**
+     * Défiler les écrans de jeu si le joueur dépasse les limites de la scène
+     * @param player
+     */
+    updateCameraBounds: function(player) {
+      if(player.x > (game.camera.x + game.camera.width)) {
+        game.add.tween(game.camera).to({ x: game.camera.x + game.camera.width }, 500, Phaser.Easing.Linear.None, true);
+      }
+
+      if(player.x < (game.camera.x)) {
+        if(game.camera.x > 0) {
+            game.add.tween(game.camera).to({ x: game.camera.x - game.camera.width }, 500, Phaser.Easing.Linear.None, true);
+        }
+      }
+
+      var halfCameraHeight = game.camera.height / 2;
+      if(player.y > halfCameraHeight) {
+        game.camera.y = player.y - halfCameraHeight;
+      }
+    },
+
     /**
      * Debuggage
      */
