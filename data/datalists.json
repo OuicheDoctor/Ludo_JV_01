@@ -19,16 +19,418 @@
       "Height" : 200
     }
   ],
-  "Obstacles" : [
+  "Elements" : [
     {
-      "ID" : 1,
-      "RelativeX" : 45,
-      "RelativeY" : 45
+      "id" : 1,
+      "nom" : "Vitrine",
+      "avancement" : "Foreground",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : 100,
+      "height" : 175,
+      "_width" : "",
+      "_height" : "",
+      "type" : 1,
+      "_type" : "obstacle"
+    },
+    {
+      "id" : 2,
+      "nom" : "Statue",
+      "avancement" : "Mixte",
+      "relativeX" : 0,
+      "relativeY" : 175,
+      "width" : 150,
+      "height" : 350,
+      "_width" : 150,
+      "_height" : 175,
+      "type" : 1,
+      "_type" : "obstacle"
+    },
+    {
+      "id" : 3,
+      "nom" : "Lamassu",
+      "avancement" : "Foreground",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : 150,
+      "height" : 525,
+      "_width" : "",
+      "_height" : "",
+      "type" : 1,
+      "_type" : "obstacle"
+    },
+    {
+      "id" : 4,
+      "nom" : "Etagere",
+      "avancement" : "Foreground",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : 150,
+      "height" : 350,
+      "_width" : "",
+      "_height" : "",
+      "type" : 1,
+      "_type" : "obstacle"
+    },
+    {
+      "id" : 5,
+      "nom" : "Applique",
+      "avancement" : "Foreground",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : 40,
+      "height" : 40,
+      "_width" : "",
+      "_height" : "",
+      "type" : 2,
+      "_type" : "accroche"
+    },
+    {
+      "id" : 6,
+      "nom" : "Tableau",
+      "avancement" : "Background",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : 110,
+      "height" : 163,
+      "_width" : "",
+      "_height" : "",
+      "type" : 3,
+      "_type" : "decors"
+    },
+    {
+      "id" : 7,
+      "nom" : "Mine",
+      "avancement" : "Foreground",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : 25,
+      "height" : 15,
+      "_width" : "",
+      "_height" : "",
+      "type" : 4,
+      "_type" : "piege"
+    },
+    {
+      "id" : 8,
+      "nom" : "Phaser",
+      "avancement" : "Foreground",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : 10,
+      "height" : 10,
+      "_width" : "",
+      "_height" : "",
+      "type" : 4,
+      "_type" : "piege"
+    },
+    {
+      "id" : 9,
+      "nom" : "Laser",
+      "avancement" : "Foreground",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : 1,
+      "height" : 200,
+      "_width" : "",
+      "_height" : "",
+      "type" : 4,
+      "_type" : "piege"
+    },
+    {
+      "id" : 10,
+      "nom" : "Mezzanine",
+      "avancement" : "Foreground",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "?",
+      "height" : 10,
+      "_width" : "",
+      "_height" : "",
+      "type" : 1,
+      "_type" : "obstacle"
+    },
+    {
+      "id" : 11,
+      "nom" : "Cloison",
+      "avancement" : "Foreground",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : 10,
+      "height" : "?",
+      "_width" : "",
+      "_height" : "",
+      "type" : 1,
+      "_type" : "obstacle"
+    },
+    {
+      "id" : 12,
+      "nom" : "Transpalette",
+      "avancement" : "Mixte",
+      "relativeX" : [
+        0,
+        0
+      ],
+      "relativeY" : [
+        0,
+        175
+      ],
+      "width" : 100,
+      "height" : 350,
+      "_width" : 100,
+      "_height" : 10,
+      "type" : 5,
+      "_type" : "plateforme_mobile"
+    },
+    {
+      "id" : 13,
+      "nom" : "Fenetre",
+      "avancement" : "Background",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : 100,
+      "height" : 175,
+      "_width" : "",
+      "_height" : "",
+      "type" : 3,
+      "_type" : "decors"
+    },
+    {
+      "id" : 14,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 15,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 16,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 17,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 18,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 19,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 20,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 21,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 22,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 23,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 24,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 25,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
+    },
+    {
+      "id" : 26,
+      "nom" : "",
+      "avancement" : "",
+      "relativeX" : "",
+      "relativeY" : "",
+      "width" : "",
+      "height" : "",
+      "_width" : "",
+      "_height" : "",
+      "type" : "",
+      "_type" : ""
     }
   ],
   "Ennemis" : [
+    {
+      "id" : 1,
+      "nom" : "Drone",
+      "portee" : 3,
+      "aggro" : 1,
+      "vie" : 1,
+      "vol" : 1,
+      "deplacement" : 1,
+      "commentaire" : [
+        "Vole",
+        "tir à distance"
+      ]
+    },
+    {
+      "id" : 2,
+      "nom" : "Garde",
+      "portee" : 3,
+      "aggro" : 1,
+      "vie" : 1,
+      "vol" : 0,
+      "deplacement" : 0,
+      "commentaire" : [
+        "Ne bouge pas",
+        "se retourne de temps en temps",
+        "faisceau lumineux déclenchant son tir à distance"
+      ]
+    },
+    {
+      "id" : 3,
+      "nom" : "Matraqueur",
+      "portee" : 1,
+      "aggro" : 2,
+      "vie" : 1,
+      "vol" : 0,
+      "deplacement" : 1,
+      "commentaire" : "Fonce le joueur quand lui fait face pour le matraquer"
+    },
+    {
+      "id" : 4,
+      "nom" : "Mommie",
+      "portee" : 2,
+      "aggro" : 2,
+      "vie" : 2,
+      "vol" : 0,
+      "deplacement" : 1,
+      "commentaire" : "Tire des bandelettes bloquables avec le coups de canne ou le dash quand le joueur est à portée"
+    }
   ],
   "Boss" : [
+    {
+      "ID" : 1,
+      "Nom" : "Sobek",
+      "Portée" : 1,
+      "Aggro" : 9,
+      "Vie" : 3,
+      "Vol" : 0,
+      "Déplacement" : 1,
+      "Commentaire" : [
+        "Alternance entre deux phases :\nPhase 1 : Fonce sur le joueur",
+        "stunné si touche le mur\nPhase 2 : Eteint toutes les lumières",
+        "ses yeux projettent un faisceau lumineux",
+        "si le joueur est pris dedans",
+        "Oneshot"
+      ]
+    }
   ],
   "Transformations" : [
   ]
