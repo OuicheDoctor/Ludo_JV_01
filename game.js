@@ -13,6 +13,7 @@ window.onload = function () {
     this.yAxis = p2.vec2.fromValues(0, 1);
 
     this.segmentList = null;
+    this.obstacleList = null;
   };
 
   PhaserGame.prototype = {
@@ -25,12 +26,20 @@ window.onload = function () {
       this.load.image('background', 'assets/demo/sky.png');
       this.load.spritesheet('dude', 'assets/demo/dude.png', 32, 48);
       this.load.json('data', 'data/datalists.json');
+
+      // Segments
+      this.load.json('segment_1_data', 'data/segments/segment_1.json');
+      this.load.json('segment_2_data', 'data/segments/segment_2.json');
+      this.load.json('segment_3_data', 'data/segments/segment_3.json');
+
+      // Elements
+      this.load.image('platform_1_fg', 'assets/elements/platform_1_fg.png');
+      this.load.image('platform_1_bg', 'assets/elements/platform_1_bg.png');
     },
 
     create: function () {
-      this.parseDataLists('data');
-      this.buildLevel();
 
+      this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
       this.game.camera.setSize(1366, 768);
       //  Enable p2 physics
       this.physics.startSystem(Phaser.Physics.P2JS);
@@ -38,6 +47,12 @@ window.onload = function () {
       this.physics.p2.gravity.y = 350;
       this.physics.p2.world.defaultContactMaterial.friction = 0.3;
       this.physics.p2.world.setGlobalStiffness(1e5);
+
+      // Load data
+      this.parseDataLists('data');
+
+      // Build level
+      this.buildLevel();
 
       //  Add a sprite
       this.player = this.add.sprite(200, 200, 'dude');
@@ -47,7 +62,6 @@ window.onload = function () {
 
       //  Enable if for physics. This creates a default rectangular body.
       this.physics.p2.enable(this.player);
-
 
       this.player.body.fixedRotation = true;
       this.player.body.damping = 0.5;
@@ -88,6 +102,8 @@ window.onload = function () {
 
       this.cursors = this.input.keyboard.createCursorKeys();
       this.jumpButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+      game.input.onDown.add(this.toggleFullScreen, this);
     },
 
     update: function () {
@@ -125,12 +141,22 @@ window.onload = function () {
       }
 
       if (this.jumpButton.isDown && game.time.now > this.jumpTimer && this.checkIfCanJump()) {
-        this.player.body.moveUp(900);
+        this.player.body.moveUp(300);
         this.jumpTimer = game.time.now + 750;
       }
 
       this.updateCameraBounds(this.player);
 
+    },
+
+    toggleFullScreen: function () {
+      if(!game.scale.isFullScreen) {
+        this.game.scale.startFullScreen(false);
+      }
+      else
+      {
+        this.game.scale.stopFullScreen();
+      }
     },
 
     checkIfCanJump: function () {
@@ -158,11 +184,12 @@ window.onload = function () {
       var sList = this.segmentList;
       var segment = null;
 
+      // Pick 3 random segments
       for (var i = 0; i < 3; i++) {
         segment = Phaser.ArrayUtils.removeRandomItem(this.segmentList);
         if(segment == undefined)
           break;
-        segment.addToGame(game, i);
+        segment.addToGame(this, i);
       }
     },
 
@@ -170,11 +197,23 @@ window.onload = function () {
       var data = this.cache.getJSON(key);
 
       var sList = new Array();
-      data.Segments.forEach(function () {
-        sList.push(new Segment('background'));
+      var current;
+
+      // Load segments data
+      data.Segments.forEach(function (seg) {
+        sList.push(new Segment(seg.ID, 'background'));
       });
-      console.log(sList);
       this.segmentList = sList;
+
+      // Load obstacles types data
+      sList = new Array();
+      data.Obstacles.forEach(function (obs)  {
+        current = new Platform();
+        current.setForeground(obs.RelativeX, obs.RelativeY, "platform_" + obs.ID + "_fg");
+        current.setBackground("platform_" + obs.ID + "_bg");
+        sList[obs.ID] = current;
+      });
+      this.obstacleList = sList;
     },
 
     updateCameraBounds: function(player) {
