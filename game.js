@@ -1,30 +1,53 @@
+var game;
+
 window.onload = function () {
-  var game = new Phaser.Game(1366, 768, Phaser.AUTO, 'game');
+  game = new Phaser.Game(1366, 768, Phaser.AUTO, 'game');
 
   var PhaserGame = function () {
-    // init
     this.sprite = null;
-
     this.player = null;
-    this.facing = 'left';
-    this.jumpTimer = 0;
     this.cursors = null;
     this.jumpButton = null;
     this.yAxis = p2.vec2.fromValues(0, 1);
 
     this.segmentList = null;
     this.obstacleList = null;
+    this.groups = {};
   };
 
   PhaserGame.prototype = {
     init: function () {
+      // Controls
+      this.cursors = this.input.keyboard.createCursorKeys();
+      this.jumpButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+      // Gamepad
+      this.input.gamepad.start();
+
+      // To listen to buttons from a specific pad listen directly on that pad game.input.gamepad.padX, where X = pad 1-4
+      pad1 = this.input.gamepad.pad1;
+      this.input.gamepad.addCallbacks(this, {
+        onConnect: function (e) {
+          console.log("onConnectCallback", e);
+        },
+        onDisconnect: function (e) {
+          console.log("onDisconnectCallback", e);
+        },
+        onDown: function (e) {
+        },
+        onUp: function (e) {
+        },
+        onAxis: function (e) {
+        },
+        onFloat: function (e) {
+        }
+      });
     },
 
     preload: function () {
-      // this.load.baseURL = '';
       this.load.image('atari', 'assets/demo/block.png');
       this.load.image('background', 'assets/demo/sky.png');
-      this.load.spritesheet('dude', 'assets/demo/dude.png', 32, 48);
+      this.load.spritesheet('player', 'assets/demo/dude.png', 32, 48);
       this.load.json('data', 'data/datalists.json');
 
       // Segments
@@ -43,10 +66,11 @@ window.onload = function () {
       this.game.camera.setSize(1366, 768);
       //  Enable p2 physics
       this.physics.startSystem(Phaser.Physics.P2JS);
+      var phy = this.physics.p2;
 
-      this.physics.p2.gravity.y = 350;
-      this.physics.p2.world.defaultContactMaterial.friction = 0.3;
-      this.physics.p2.world.setGlobalStiffness(1e5);
+      phy.gravity.y = 350;
+      phy.world.defaultContactMaterial.friction = 0.3;
+      phy.world.setGlobalStiffness(1e5);
 
       // Load data
       this.parseDataLists('data');
@@ -54,42 +78,54 @@ window.onload = function () {
       // Build level
       this.buildLevel();
 
-      //  Add a sprite
-      this.player = this.add.sprite(200, 200, 'dude');
-      this.player.animations.add('left', [0, 1, 2, 3], 10, true);
-      this.player.animations.add('turn', [4], 20, true);
-      this.player.animations.add('right', [5, 6, 7, 8], 10, true);
+      // Créer une collision avec un autre sprite
+      // this.player.body.createBodyCallback(panda, hitPanda, this);
 
-      //  Enable if for physics. This creates a default rectangular body.
-      this.physics.p2.enable(this.player);
+      //  Turn on impact events for the world, without this we get no collision callbacks
+      phy.setImpactEvents(true);
 
-      this.player.body.fixedRotation = true;
-      this.player.body.damping = 0.5;
+      //  Player
+      this.player = new Player(this);
 
-      var spriteMaterial = this.physics.p2.createMaterial('spriteMaterial', this.player.body);
-      var worldMaterial = this.physics.p2.createMaterial('worldMaterial');
-      var boxMaterial = this.physics.p2.createMaterial('worldMaterial');
+      var spriteMaterial = phy.createMaterial('spriteMaterial', this.player.body);
+      var worldMaterial = phy.createMaterial('worldMaterial');
+      var boxMaterial = phy.createMaterial('boxMaterial');
 
       //  4 trues = the 4 faces of the world in left, right, top, bottom order
-      this.physics.p2.setWorldMaterial(worldMaterial, true, true, true, true);
+      phy.setWorldMaterial(worldMaterial, true, true, true, true);
 
-      //  A stack of boxes - you'll stick to these
+      // Groups
+      // Create our collision groups. One for the player, one for the pandas
+      var playerCollisionGroup = phy.createCollisionGroup();
+      var boxCollisionGroup = phy.createCollisionGroup();
+
+      // Obligatoire pour que les sprites ayant leurs propres "collisions groups" gardent la collision avec la scene
+      // A faire après la création des "collisions groups"
+      phy.updateBoundsCollisionGroup();
+
+      var boxGroup = this.add.group();
+      boxGroup.enableBody = true;
+      boxGroup.physicsBodyType = Phaser.Physics.P2JS;
+
+      //  A stack of boxGroup - you'll stick to these
       for (var i = 1; i < 4; i++) {
-        var box = this.add.sprite(300, 645 - (95 * i), 'atari');
-        this.physics.p2.enable(box);
+        var box = boxGroup.create(300, 645 - (95 * i), 'atari');
         box.body.mass = 6;
-        // box.body.static = true;
         box.body.setMaterial(boxMaterial);
+        box.body.setCollisionGroup(boxCollisionGroup);
+        box.body.collides([boxCollisionGroup, playerCollisionGroup]);
+        // box.body.static = true;
       }
+
+      this.player.body.setCollisionGroup(playerCollisionGroup);
+      this.player.body.collides(boxCollisionGroup, this.player.onHitBox, this.player);
 
       //  Here is the contact material. It's a combination of 2 materials, so whenever shapes with
       //  those 2 materials collide it uses the following settings.
-
-      var groundPlayerCM = this.physics.p2.createContactMaterial(spriteMaterial, worldMaterial, {friction: 0.0});
-      var groundBoxesCM = this.physics.p2.createContactMaterial(worldMaterial, boxMaterial, {friction: 0.6});
+      var groundPlayerCM = phy.createContactMaterial(spriteMaterial, worldMaterial, {friction: 0.0});
+      var groundBoxesCM = phy.createContactMaterial(worldMaterial, boxMaterial, {friction: 0.6});
 
       //  Here are some more options you can set:
-
       // contactMaterial.friction = 0.0;     // Friction to use in the contact of these two materials.
       // contactMaterial.restitution = 0.0;  // Restitution (i.e. how bouncy it is!) to use in the contact of these two materials.
       // contactMaterial.stiffness = 1e3;    // Stiffness of the resulting ContactEquation that this ContactMaterial generate.
@@ -99,54 +135,7 @@ window.onload = function () {
       // contactMaterial.surfaceVelocity = 0.0;        // Will add surface velocity to this material. If bodyA rests on top if bodyB, and the surface velocity is positive, bodyA will slide to the right.
 
       text = this.add.text(20, 20, 'move with arrow, space to jump', {fill: '#ffffff'});
-
-      this.cursors = this.input.keyboard.createCursorKeys();
-      this.jumpButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
       game.input.onDown.add(this.toggleFullScreen, this);
-    },
-
-    update: function () {
-      if (this.cursors.left.isDown) {
-        this.player.body.moveLeft(200);
-
-        if (this.facing != 'left') {
-          this.player.animations.play('left');
-          this.facing = 'left';
-        }
-      }
-      else if (this.cursors.right.isDown) {
-        this.player.body.moveRight(200);
-
-        if (this.facing != 'right') {
-          this.player.animations.play('right');
-          this.facing = 'right';
-        }
-      }
-      else {
-        this.player.body.velocity.x = 0;
-
-        if (this.facing != 'idle') {
-          this.player.animations.stop();
-
-          if (this.facing == 'left') {
-            this.player.frame = 0;
-          }
-          else {
-            this.player.frame = 5;
-          }
-
-          this.facing = 'idle';
-        }
-      }
-
-      if (this.jumpButton.isDown && game.time.now > this.jumpTimer && this.checkIfCanJump()) {
-        this.player.body.moveUp(300);
-        this.jumpTimer = game.time.now + 750;
-      }
-
-      this.updateCameraBounds(this.player);
-
     },
 
     toggleFullScreen: function () {
@@ -159,27 +148,6 @@ window.onload = function () {
       }
     },
 
-    checkIfCanJump: function () {
-      var result = false;
-
-      for (var i = 0; i < this.physics.p2.world.narrowphase.contactEquations.length; i++) {
-        var c = this.physics.p2.world.narrowphase.contactEquations[i];
-
-        if (c.bodyA === this.player.body.data || c.bodyB === this.player.body.data) {
-          var d = p2.vec2.dot(c.normalA, this.yAxis);
-
-          if (c.bodyA === this.player.body.data) {
-            d *= -1;
-          }
-
-          if (d > 0.5) {
-            result = true;
-          }
-        }
-      }
-      return result;
-    },
-
     buildLevel: function () {
       var sList = this.segmentList;
       var segment = null;
@@ -190,6 +158,23 @@ window.onload = function () {
         if(segment == undefined)
           break;
         segment.addToGame(this, i);
+      }
+    },
+
+    updateCameraBounds: function(player) {
+      if(player.x > (game.camera.x + game.camera.width)) {
+        game.add.tween(game.camera).to({ x: game.camera.x + game.camera.width }, 500, Phaser.Easing.Linear.None, true);
+      }
+
+      if(player.x < (game.camera.x)) {
+        if(game.camera.x > 0) {
+            game.add.tween(game.camera).to({ x: game.camera.x - game.camera.width }, 500, Phaser.Easing.Linear.None, true);
+        }
+      }
+
+      var halfCameraHeight = game.camera.height / 2;
+      if(player.y > halfCameraHeight) {
+        game.camera.y = player.y - halfCameraHeight;
       }
     },
 
@@ -215,37 +200,13 @@ window.onload = function () {
       });
       this.obstacleList = sList;
     },
-
-    updateCameraBounds: function(player) {
-      if(player.x > (game.camera.x + game.camera.width)) {
-        /*game.camera.x += game.camera.width;*/
-        game.add.tween(game.camera).to({ x: game.camera.x + game.camera.width }, 500, Phaser.Easing.Linear.None, true);
-      }
-
-      if(player.x < (game.camera.x)) {
-        if(game.camera.x > 0) {
-          game.add.tween(game.camera).to({ x: game.camera.x - game.camera.width }, 500, Phaser.Easing.Linear.None, true);
-          /*game.camera.x -= game.camera.width;*/
-        }
-      }
-
-      var halfCameraHeight = game.camera.height / 2;
-      if(player.y > halfCameraHeight) {
-        game.camera.y = player.y - halfCameraHeight;
-      }
+    /**
+     * Debuggage
+     */
+    dump: function() {
+      // console.log(this.pad1._axes[0]);
+      // console.log(this.pad1._rawPad.axes[0]);
     }
-  };
-
-  CustomSprite = function (game, x, y, key, group) {
-
-    Phaser.Sprite.call(this, game, x, y, key);
-
-    this.physics.p2.enable(this);
-  };
-
-  CustomSprite.prototype = Object.create(Phaser.Sprite.prototype);
-  CustomSprite.prototype.constructor = CustomSprite;
-  CustomSprite.prototype.someBehavior = function () {
   };
 
   game.state.add('Game', PhaserGame, true);
