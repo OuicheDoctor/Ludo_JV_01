@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"proto",
+				"prototype"
+			],
+			[
+				"Bos",
+				"BossEnum"
+			],
+			[
+				"Phas",
+				"PhaserGame"
+			],
+			[
+				"Arr",
+				"ArrayUtils"
+			],
+			[
 				"del",
 				"deltaY"
 			],
@@ -76,55 +92,10 @@
 	"buffers":
 	[
 		{
-			"file": "data/segments/segment_1.json",
-			"settings":
-			{
-				"buffer_size": 108,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Player.js",
-			"settings":
-			{
-				"buffer_size": 2826,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "data/datalists.json",
-			"settings":
-			{
-				"buffer_size": 8546,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "data/segments/segment_2.json",
-			"settings":
-			{
-				"buffer_size": 108,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "data/segments/segment_3.json",
-			"settings":
-			{
-				"buffer_size": 108,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "entities/platform.js",
 			"settings":
 			{
-				"buffer_size": 2108,
+				"buffer_size": 1974,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -133,7 +104,61 @@
 			"file": "game.js",
 			"settings":
 			{
-				"buffer_size": 9868,
+				"buffer_size": 9109,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/segments/segment_4.json",
+			"settings":
+			{
+				"buffer_size": 176,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/datalists.json",
+			"settings":
+			{
+				"buffer_size": 8711,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "entities/bosses/sobek.js",
+			"settings":
+			{
+				"buffer_size": 145,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "entities/boss.js",
+			"settings":
+			{
+				"buffer_size": 1476,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/repositories/Unity-Prototypes/.gitignore",
+			"settings":
+			{
+				"buffer_size": 330,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Player.js",
+			"settings":
+			{
+				"buffer_size": 2925,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -142,7 +167,34 @@
 			"file": "entities/segment.js",
 			"settings":
 			{
-				"buffer_size": 889,
+				"buffer_size": 1265,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/segments/segment_3.json",
+			"settings":
+			{
+				"buffer_size": 124,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/segments/segment_2.json",
+			"settings":
+			{
+				"buffer_size": 125,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/segments/segment_1.json",
+			"settings":
+			{
+				"buffer_size": 122,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -151,7 +203,8 @@
 			"file": "index_dev.html",
 			"settings":
 			{
-				"buffer_size": 465,
+				"buffer_size": 615,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
@@ -198,22 +251,31 @@
 	[
 		"/E/repositories/Ludo_JV_01",
 		"/E/repositories/Ludo_JV_01/assets",
-		"/E/repositories/Ludo_JV_01/assets/elements",
+		"/E/repositories/Ludo_JV_01/assets/boss",
+		"/E/repositories/Ludo_JV_01/assets/demo",
 		"/E/repositories/Ludo_JV_01/data",
 		"/E/repositories/Ludo_JV_01/data/segments",
-		"/E/repositories/Ludo_JV_01/entities"
+		"/E/repositories/Ludo_JV_01/entities",
+		"/E/repositories/Ludo_JV_01/entities/bosses"
 	],
 	"file_history":
 	[
+		"/E/repositories/Ludo_JV_01/entities/boss.js",
+		"/E/repositories/Ludo_JV_01/data/segments/segment_1.json",
+		"/E/repositories/Ludo_JV_01/data/datalists.json",
+		"/E/repositories/Ludo_JV_01/assets/elements/element_5_fg.png",
+		"/E/repositories/Ludo_JV_01/data/segments/segment_2.json",
+		"/E/repositories/Ludo_JV_01/data/segments/segment_3.json",
+		"/E/repositories/Ludo_JV_01/data/segments/segment_4.json",
+		"/E/repositories/Ludo_JV_01/Player.js",
 		"/E/repositories/Ludo_JV_01/README.md",
 		"/E/repositories/Ludo_JV_01/game.js",
-		"/E/repositories/Ludo_JV_01/data/segments/segment_1.json",
 		"/E/repositories/Ludo_JV_01/assets/elements/platform_1_fg.png",
 		"/E/Hubic/Dev/IDEAS/Crunch OS.txt"
 	],
 	"find":
 	{
-		"height": 34.0
+		"height": 23.0
 	},
 	"find_in_files":
 	{
@@ -228,6 +290,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"\n\t",
+			"deploy",
+			"atari",
 			"boxCollisionGroup",
 			"playerCollisionGroup",
 			"100",
@@ -254,52 +319,24 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 6,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "data/segments/segment_1.json",
+					"file": "entities/platform.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 108,
+						"buffer_size": 1974,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								41,
-								41
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "Player.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2826,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2573,
-								2573
+								1659,
+								1659
 							]
 						],
 						"settings":
@@ -307,64 +344,6 @@
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 921.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "data/datalists.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8546,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3368,
-								3368
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2178.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "data/segments/segment_2.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 108,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								41,
-								41
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -374,20 +353,50 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "data/segments/segment_3.json",
+					"buffer": 1,
+					"file": "game.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 108,
+						"buffer_size": 9109,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								41,
-								41
+								7249,
+								7242
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3222.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "data/segments/segment_4.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 176,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								103,
+								103
 							]
 						],
 						"settings":
@@ -398,84 +407,83 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "data/datalists.json",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 8711,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6030.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "entities/bosses/sobek.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 145,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								68,
+								68
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "entities/platform.js",
+					"file": "entities/boss.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2108,
+						"buffer_size": 1476,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2050,
-								2050
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 363.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "game.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9868,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7909,
-								7934
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2498.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "entities/segment.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 889,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								613,
-								615
+								469,
+								469
 							]
 						],
 						"settings":
@@ -488,24 +496,196 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "index_dev.html",
+					"buffer": 6,
+					"file": "/E/repositories/Unity-Prototypes/.gitignore",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 465,
+						"buffer_size": 330,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								323,
-								174
+								61,
+								61
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "Player.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2925,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								31,
+								88
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "entities/segment.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1265,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1251,
+								1251
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "data/segments/segment_3.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 124,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								121,
+								121
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "data/segments/segment_2.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 125,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								122,
+								122
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "data/segments/segment_1.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 122,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								119,
+								119
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "index_dev.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 615,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								459,
+								459
 							]
 						],
 						"settings":
@@ -516,11 +696,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 13,
 					"file": "index.html",
 					"semi_transient": false,
 					"settings":
@@ -544,7 +724,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
