@@ -1,5 +1,5 @@
 Player = function (phaser) {
-  Phaser.Sprite.call(this, phaser.game, 200, 200, 'player');
+  Phaser.Sprite.call(this, phaser.game, 100, 20, 'player');
 
   this.phaser = phaser;
   this.facing = 'left';
@@ -101,3 +101,7 @@ Player.prototype.onHitBox = function (bodyPlayer, bodyBox) {
   console.log("onHitBox");
   // bodyBox.velocity.x = 300;
 };
+
+Player.prototype.onHitEnemy = function(bodyPlayer, bodyEnemy) {
+  bodyEnemy.sprite.takeDamage();
+}
