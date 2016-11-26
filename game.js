@@ -1,7 +1,7 @@
 var game;
 
 window.onload = function () {
-  game = new Phaser.Game(1366, 768, Phaser.AUTO, 'game');
+  game = new Phaser.Game(380, 216, Phaser.AUTO, 'game');
 
   var PhaserGame = function () {
     this.sprite = null;
@@ -10,12 +10,15 @@ window.onload = function () {
     this.jumpButton = null;
     this.yAxis = p2.vec2.fromValues(0, 1);
 
+    this.bossSegmentList = null;
     this.segmentList = null;
     this.obstacleList = null;
     this.groups = {
         playerCollisionGroup : null,
-        boxCollisionGroup : null
+        boxCollisionGroup : null,
+        enemyCollisionGroup : null
     };
+    this.bossList = null;
   };
 
   PhaserGame.ElementTypeEnum = {
@@ -24,6 +27,10 @@ window.onload = function () {
     DECORS          : 3,
     PIEGE           : 4,
     MOVING_PLATFORM : 5
+  };
+
+  PhaserGame.BossEnum = {
+    SOBEK : 1,
   };
 
   PhaserGame.prototype = {
@@ -57,13 +64,15 @@ window.onload = function () {
 
     preload: function () {
       this.load.image('background', 'assets/demo/sky.png');
-      this.load.spritesheet('player', 'assets/demo/dude.png', 32, 48);
+      this.load.spritesheet('player', 'assets/demo/dude.png', 17, 25);
+      this.load.spritesheet('sobek', 'assets/boss/sobek.png', 32, 32);
       this.load.json('data', 'data/datalists.json');
 
       // Segments
       this.load.json('segment_1_data', 'data/segments/segment_1.json');
       this.load.json('segment_2_data', 'data/segments/segment_2.json');
       this.load.json('segment_3_data', 'data/segments/segment_3.json');
+      this.load.json('segment_4_data', 'data/segments/segment_4.json');
 
       // Elements
       this.load.image('element_1_fg', 'assets/elements/element_1_fg.png');
@@ -81,12 +90,14 @@ window.onload = function () {
       this.load.image('element_12_bg', 'assets/elements/element_12_bg.png');
       this.load.image('element_12_fg', 'assets/elements/element_12_fg.png');
       this.load.image('element_13_bg', 'assets/elements/element_13_bg.png');
+
+      // 
     },
 
     create: function () {
 
       this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.game.camera.setSize(1366, 768);
+      this.game.camera.setSize(380, 216);
       //  Enable p2 physics
       this.physics.startSystem(Phaser.Physics.P2JS);
       var phy = this.physics.p2;
@@ -104,6 +115,7 @@ window.onload = function () {
       // Create our collision groups. One for the player, one for the pandas
       this.groups.playerCollisionGroup = phy.createCollisionGroup();
       this.groups.boxCollisionGroup = phy.createCollisionGroup();
+      this.groups.enemyCollisionGroup = phy.createCollisionGroup();
 
       // Load data
       this.parseDataLists('data');
@@ -124,6 +136,7 @@ window.onload = function () {
 
       this.player.body.setCollisionGroup(this.groups.playerCollisionGroup);
       this.player.body.collides(this.groups.boxCollisionGroup, this.player.onHitBox, this.player);
+      this.player.body.collides(this.groups.enemyCollisionGroup, this.player.onHitEnemy, this.player);
 
       //  Here is the contact material. It's a combination of 2 materials, so whenever shapes with
       //  those 2 materials collide it uses the following settings.
@@ -148,11 +161,20 @@ window.onload = function () {
 
       // Pick 3 random segments
       for (var i = 0; i < 3; i++) {
-        segment = Phaser.ArrayUtils.removeRandomItem(this.segmentList);
+        segment = Phaser.ArrayUtils.removeRandomItem(sList);
         if(segment == undefined)
           break;
-        segment.addToGame(this, i);
+
+        if(i == 0)
+          segment.addToGame(this, true);
+        else
+          segment.addToGame(this);
       }
+
+      sList = this.bossSegmentList;
+      segment = Phaser.ArrayUtils.removeRandomItem(sList)
+      if(segment !== undefined)
+        segment.addToGame(this);
     },
 
     updateCameraBounds: function(player) {
@@ -177,12 +199,17 @@ window.onload = function () {
       var data = cache.getJSON(key);
 
       var sList = new Array();
+      var bList = new Array();
       var current;
 
       // Load segments data
       data.Segments.forEach(function (seg) {
-        sList.push(new Segment(seg.ID, 'background'));
+        if(seg.Boss === 1)
+          bList.push(new Segment(seg.ID, 'background'));
+        else
+          sList.push(new Segment(seg.ID, 'background'));
       });
+      this.bossSegmentList = bList;
       this.segmentList = sList;
 
       // Load obstacles types data
@@ -221,6 +248,21 @@ window.onload = function () {
         sList[obs.id] = current;
       });
       this.obstacleList = sList;
+
+      // Load bosses data
+      sList = new Array();
+      data.Boss.forEach(function (boss) {
+        switch (boss.ID) {
+          case PhaserGame.BossEnum.SOBEK:
+            current = new Sobek(this, boss.Vie);
+            sList[boss.ID] = current;
+            break;
+          default:
+            break;
+        }
+      });
+      this.bossList = sList; 
+
     },
     /**
      * Debuggage
