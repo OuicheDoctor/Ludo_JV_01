@@ -36,7 +36,7 @@ var Platform = function () {
     setDanger : function(isDanger) {
       this.danger = isDanger;
     },
-    
+
     setDeltaMove : function(deltaX, deltaY) {
       this.deltaX = deltaX;
       this.deltaY = deltaY;

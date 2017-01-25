@@ -1,32 +1,35 @@
-var Segment = function (id, bkg, y = 0) {
-    // init
-    this.id = id;
-    this.bkg = bkg;
-    this.x = null;
-    this.y = y;
-  };
+var Segment = function () {
+  // Pick random segment
+  this.id = game.rnd.integerInRange(1, data.segmentTotalCount);
 
-  Segment.prototype = {
-    addToGame : function(instance, index) {
-      var x = 0;
-      var game = instance.game;
-      if(index > 0)
-          x = game.world.width;
-      this.x = x;
-      var bkgSprite = game.add.sprite(x, this.y, this.bkg);
-      this.buildContent(instance);
-      game.world.resize(x + bkgSprite.width, Math.max(game.world.height, bkgSprite.height));
-    },
+  Phaser.Sprite.call(this, game, 0, 0, 'segment_bkg_' + this.id);
+}
+Segment.prototype = Object.create(Phaser.Sprite.prototype);
 
-    buildContent : function(instance) {
-      var data = instance.cache.getJSON("segment_" + this.id + "_data");
+Segment.prototype.deploy = function (x, y) {
+  // Get segment data
+  var segData = data.segments[this.id];
+  this.width = segData.Width;
+  this.height = segData.Height;
 
-      // Load obstacles
-      var current;
-      var segment = this;
-      data.Obstacles.forEach(function (seg) {
-          current = instance.obstacleList[seg.ID];
-          current.deploy(instance, segment.x + seg.X, segment.y + seg.Y);
-      });
-    }
-  };
+  // Add segment to game;
+  this.x = x;
+  this.y = y + game.height - this.height;
+  if(game.scale.isFullScreen)
+    this.scale.setTo(game.scale.scaleFactor.x, game.scale.scaleFactor.y);
+  data.groups.segments.add(this);
+
+  // Get segment composition
+  var composition = game.cache.getJSON("segment_" + this.id + "_data");
+  composition.Obstacles.forEach(function (obs) {
+    var obs = new Obstacle(obs.ID, obs.X, obs.Y)
+    if(this.scale.isFullScreen)
+      obs.scale.setTo(game.scale.scaleFactor.x, game.scale.scaleFactor.y);
+    this.addChild(obs);
+    data.groups.obstacles.add(obs);
+  }, this);
+}
+
+Segment.prototype.update = function () {
+
+}
