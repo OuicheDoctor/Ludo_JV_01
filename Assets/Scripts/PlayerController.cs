@@ -5,64 +5,50 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     [SerializeField]
-    protected float moveSpeed = 10;
-    [SerializeField]
-    protected PlayerState[] states;
+    protected PlayerTransformation[] transformation;
 
-    // Components
-    protected Animator _animator;
-    protected SpriteRenderer _renderer;
-    protected Rigidbody2D _rb2D;
+    [HideInInspector]
+    public bool grounded = false;
 
-    protected bool _walking = false;
-    protected bool _facingRight = true;
-    protected Vector2 _direction = Vector2.zero;
-
-	void Start () {
-        _animator = GetComponent<Animator>();
-        _renderer = GetComponent<SpriteRenderer>();
-        _rb2D = GetComponent<Rigidbody2D>();
-	}
+    protected PlayerTransformation currentForm; 
 	
+    void Start() {
+        currentForm = transformation[0];
+        currentForm.InitTransform(gameObject);
+    }
+
 	void Update () {
-        if(Input.GetButtonDown("Fire1")) {
+        currentForm.Update();
+
+        if (Input.GetKeyDown(KeyCode.Joystick1Button5)) {
+            currentForm = transformation[1];
             SwapForm(1);
-        } else if(Input.GetButtonUp("Fire1")) {
+        }
+        else if (Input.GetKeyUp(KeyCode.Joystick1Button5)) {
+            currentForm = transformation[0];
             SwapForm(0);
         }
 
-        var rawXAxis = Input.GetAxis("Horizontal");
-        var absRawXAxis = Mathf.Abs(rawXAxis);
-        var xAxis = Mathf.Sign(rawXAxis) * Mathf.CeilToInt(absRawXAxis);
-        _direction = Vector2.right * xAxis;
-
-        if (absRawXAxis > 0.1 && !_walking) {
-            _animator.SetBool("walk", true);
-            _walking = true;
+        if (Input.GetKeyDown(KeyCode.Joystick1Button4)) {
+            currentForm = transformation[2];
+            SwapForm(2);
         }
-        else if (absRawXAxis <= 0.1 && _walking) {
-            _animator.SetBool("walk", false);
-            _walking = false;
+        else if (Input.GetKeyUp(KeyCode.Joystick1Button4)) {
+            currentForm = transformation[0];
+            SwapForm(0);
         }
-
-        if(xAxis > 0 && !_facingRight)
-        {
-            _renderer.flipX = false;
-            _facingRight = true;
-        }
-        else if(xAxis < 0 && _facingRight) {
-            _renderer.flipX = true;
-            _facingRight = false;
-        }
-	}
+    }
 
     void FixedUpdate() {
-        _rb2D.AddForce(_direction * moveSpeed, ForceMode2D.Force);
+        currentForm.FixedUpdate();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        currentForm.OnCollisionEnter2D(collision);
     }
 
     protected void SwapForm(int formIndex) {
-        var form = states[formIndex];
-        _renderer.sprite = form.defaultSprite;
-        _animator.runtimeAnimatorController = form.animator;
+        var form = transformation[formIndex];
+        form.InitTransform(gameObject);
     }
 }

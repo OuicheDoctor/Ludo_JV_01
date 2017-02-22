@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a6a1a96b01bef274b8a37af1e83630c8
+timeCreated: 1485372390
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - defaultSprite: {fileID: 21300098, guid: 368da80388e406d46b292ac5988d481b, type: 3}
+  - animator: {fileID: 9100000, guid: 7994bf3d96c982d4b899db566279fba6, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
